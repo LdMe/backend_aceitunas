@@ -1,14 +1,21 @@
 import express from "express";
+import dotenv from "dotenv";
 
 import router from "./routes/router.js";
 
+dotenv.config();
 const app = express();
+
+app.use(express.static("public"));
+
+app.set('views', './src/views');
+app.set('view engine', 'pug');
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
 app.get("/",(req,res)=>{
-    res.send("<h1>LMLA -Liga Mundial de Lanzamiento de Aceitunas</h1>");
+    res.render("home");
 });
 
 app.use("/",router);

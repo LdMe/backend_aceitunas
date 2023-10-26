@@ -1,0 +1,8 @@
+extends ../layout
+
+block content 
+    h1 Tipos de aceitunas
+    if aceitunas
+        ul 
+            each aceituna in aceitunas
+                li= aceituna.tipo +', '+ aceituna.peso

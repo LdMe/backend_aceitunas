@@ -1,6 +1,7 @@
 import { Router } from "express";
 
 import aceitunasController from "../controllers/aceitunas/aceitunasController.js";
+import isAuthenticated from "../middlewares/authMiddleware.js";
 
 
 const router = Router();

@@ -28,7 +28,7 @@ for(let i = 0; i < 5;i++){
 
 const getAll =(req,res) =>{
     // falta la parte de conseguir los datos de la base de datos
-    res.json(aceitunas);
+    res.render("aceitunas/list",{aceitunas});
 }
 
 const getById = (req,res) =>{
