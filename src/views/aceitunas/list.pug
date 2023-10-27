@@ -2,7 +2,9 @@ extends ../layout
 
 block content 
     h1 Tipos de aceitunas
-    if aceitunas
+    if error 
+        h2 No se han podido encontrar los datos
+    else if aceitunas
         ul 
             each aceituna in aceitunas
                 li= aceituna.tipo +', '+ aceituna.peso

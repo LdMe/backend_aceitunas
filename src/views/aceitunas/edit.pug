@@ -1,0 +1,12 @@
+extends ../layout
+
+block content 
+    h1 Editar Aceituna
+    if error 
+        h2= error
+    form(action=`/aceitunas/${aceituna.id}`, method="post")
+        label(for="tipo") tipo
+        input(type="text", name="tipo", id="tipo" value=aceituna.tipo)  
+        label(for="peso") peso
+        input(type="number", name="peso", id="peso", value=aceituna.peso ) 
+        input(type="submit", value="guardar")
