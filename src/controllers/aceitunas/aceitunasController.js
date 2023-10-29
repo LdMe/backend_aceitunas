@@ -1,3 +1,5 @@
+import Aceituna from "../../models/aceituna.js";
+
 const nombresAceitunas = [
     "Manzanilla",
     "Gordal",
@@ -26,14 +28,20 @@ for (let i = 0; i < 5; i++) {
     maxId++;
 }
 
-const getAll = () => {
-    // falta la parte de conseguir los datos de la base de datos
-    return [null, aceitunas];
+const getAll = async () => {
+    try{
+        const aceitunas1 = await Aceituna.getAllAceitunas();
+        console.log(aceitunas1)
+        return [null, aceitunas1];
+    }
+    catch (e){
+        return [e.message, null];
+    }
 }
 
 const getById = (id) => {
     try {
-        const aceituna = aceitunas.find(element => element.id == id);
+        const aceituna = Aceituna.getAceitunaById(id);
         return [null, aceituna];
     }
     catch (e) {

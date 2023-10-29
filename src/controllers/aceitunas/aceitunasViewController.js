@@ -1,7 +1,7 @@
 import aceitunasController from "./aceitunasController.js";
 
- const getAll =(req,res) =>{
-    const [error, aceitunas] = aceitunasController.getAll();
+ const getAll = async(req,res) =>{
+    const [error, aceitunas] = await aceitunasController.getAll();
     res.render("aceitunas/list",{error,aceitunas});
 }
 
