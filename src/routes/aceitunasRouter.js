@@ -10,11 +10,12 @@ router.get("/",(req,res)=>{
     aceitunasViewController.getAll(req,res);
 });
 
+router.get("/new",aceitunasViewController.createForm);
+
 router.get("/:id",(req,res)=>{
     aceitunasViewController.getById(req,res);
 });
 
-router.get("/new",aceitunasViewController.createForm);
 
 router.post("/",(req,res)=>{
     aceitunasViewController.create(req,res);

@@ -1,15 +1,15 @@
 import aceitunasController from "./aceitunasController.js";
 
  const getAll = async (req,res) =>{
+    const errorMessage = req.query.error;
     const [error, aceitunas] = await aceitunasController.getAll();
-    res.render("aceitunas/list",{error,aceitunas});
+    res.render("aceitunas/list",{error: error || errorMessage,aceitunas});
 }
 
 const getById = async (req,res) =>{
     const id = req.params.id;
     const [error,aceituna] = await aceitunasController.getById(id);
-    //res.render("aceitunas/show",{error,aceituna});   
-    res.json(aceituna);
+    res.render("aceitunas/show",{error,aceituna});   
 }
 
 const createForm = (req,res)=>{
@@ -17,9 +17,9 @@ const createForm = (req,res)=>{
     res.render("aceitunas/new",{error});
 }
 
-const create = (req,res) =>{
+const create = async(req,res) =>{
     const {tipo,peso} = req.body;
-    const [error,aceituna] = aceitunasController.create(tipo,peso);
+    const [error,aceituna] = await aceitunasController.create(tipo,peso);
     if(error){
         const uriError = encodeURIComponent(error);
         return res.redirect(`/aceitunas/new?error=${uriError}`)
@@ -37,11 +37,11 @@ const updateForm = async(req,res) =>{
     res.render("aceitunas/edit",{error:errorMessage,aceituna});
 }
 
-const update = (req,res) =>{
+const update = async(req,res) =>{
     const id = req.params.id;
     console.log("params id",id)
     const {tipo, peso} = req.body;
-    const [error,aceituna] = aceitunasController.update(id,tipo,peso);
+    const [error,aceituna] = await aceitunasController.update(id,tipo,peso);
     if(error){
         const uriError = encodeURIComponent(error);
         return res.redirect(`/aceitunas/${id}/edit?error=${uriError}`)
@@ -49,9 +49,13 @@ const update = (req,res) =>{
     res.redirect(`/aceitunas/${id}`);
 };
 
-const remove = (req,res)=>{
+const remove = async (req,res)=>{
     const id = req.params.id;
-    const [error,aceituna] = aceitunasController.remove(id);
+    const [error,aceituna] = await aceitunasController.remove(id);
+    if(error){
+        const uriError = encodeURIComponent(error);
+        return res.redirect(`/aceitunas?error=${uriError}`);
+    }
     res.redirect("/aceitunas");
 }
 

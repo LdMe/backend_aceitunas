@@ -3,8 +3,15 @@ extends ../layout
 block content 
     h1 Tipos de aceitunas
     if error 
-        h2 No se han podido encontrar los datos
-    else if aceitunas
+        p(class="error", style="color:red;")= error
+     
+    button 
+        a(href='/aceitunas/new') Crear nuevo tipo de aceituna
+    if aceitunas
         ul 
             each aceituna in aceitunas
                 li= aceituna.tipo +', '+ aceituna.peso
+                    button
+                        a(href='/aceitunas/'+aceituna.aceituna_id+'/edit') Editar
+                    button
+                        a(href='/aceitunas/'+aceituna.aceituna_id+'/delete') Eliminar

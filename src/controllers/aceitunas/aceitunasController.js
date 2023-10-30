@@ -20,18 +20,18 @@ const getById = async (id) => {
         return [e.message, null];
     }
 }
-const create = (tipo, peso) => {
+const create = async (tipo, peso) => {
     if (tipo === undefined || peso === undefined) {
         const error = "Tipo y peso deben ser definidos";
         return [error, null];
     }
-    const aceituna = {
-        id: maxId++,
-        tipo: tipo,
-        peso
-    };
-    aceitunas.push(aceituna);
-    return [null, aceituna];
+    try {
+        const aceituna = await aceitunasModel.create({tipo,peso});
+        return [null, aceituna];
+    }
+    catch (e) {
+        return [e.message, null];
+    }
 }
 
 const update = async(id,tipo,peso) => {
@@ -56,10 +56,9 @@ const update = async(id,tipo,peso) => {
     }
 };
 
-const remove = (id) => {
+const remove = async (id) => {
     try {
-        const aceituna = aceitunas.find(element => element.id == id);
-        aceitunas = aceitunas.filter(element => element.id != id);
+        const aceituna = await aceitunasModel.remove(id);
         if(!aceituna){
             const error = "No se ha encontrado ningún elemento con ese ID";
             return[error,null];

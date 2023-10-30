@@ -1,0 +1,11 @@
+extends ../layout 
+
+block content 
+    if error 
+        p(class="error", style="color:red;")= error
+    form(action="/aceitunas", method="post")
+        label(for="tipo") Tipo
+        input(type="text", name="tipo")
+        label(for="peso") peso 
+        input(type="text", name="peso")
+        input(type="submit", value="Crear")  
