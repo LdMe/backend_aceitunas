@@ -1,14 +1,15 @@
 import aceitunasController from "./aceitunasController.js";
 
- const getAll =(req,res) =>{
-    const [error, aceitunas] = aceitunasController.getAll();
+ const getAll = async (req,res) =>{
+    const [error, aceitunas] = await aceitunasController.getAll();
     res.render("aceitunas/list",{error,aceitunas});
 }
 
-const getById = (req,res) =>{
+const getById = async (req,res) =>{
     const id = req.params.id;
-    const [error,aceituna] = aceitunasController.getById(id);
-    res.render("aceitunas/show",{error,aceituna});   
+    const [error,aceituna] = await aceitunasController.getById(id);
+    //res.render("aceitunas/show",{error,aceituna});   
+    res.json(aceituna);
 }
 
 const createForm = (req,res)=>{
@@ -26,10 +27,10 @@ const create = (req,res) =>{
     res.redirect("/aceitunas");
 }
 
-const updateForm = (req,res) =>{
+const updateForm = async(req,res) =>{
     const errorMessage = req.query.error;
     const id = req.params.id;
-    const [error,aceituna] = aceitunasController.getById(id);
+    const [error,aceituna] = await aceitunasController.getById(id);
     if(error){
         res.redirect("/aceitunas");
     }
@@ -38,6 +39,7 @@ const updateForm = (req,res) =>{
 
 const update = (req,res) =>{
     const id = req.params.id;
+    console.log("params id",id)
     const {tipo, peso} = req.body;
     const [error,aceituna] = aceitunasController.update(id,tipo,peso);
     if(error){

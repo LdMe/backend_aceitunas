@@ -1,39 +1,19 @@
-const nombresAceitunas = [
-    "Manzanilla",
-    "Gordal",
-    "Verdial",
-    "Hojiblanca",
-    "Lechín",
-    "Picual",
-    "Arbequina",
-    "Cornicabra",
-    "Empeltre",
-    "Cacereña",
-    "Changlot Real",
-    "Chetoui",
-    "Frantoio",
-];
-let aceitunas = [];
-let maxId = 1;
+import aceitunasModel from "../../models/aceitunasModel.js";
 
-for (let i = 0; i < 5; i++) {
-    const newAceituna = {
-        id: i + 1,
-        tipo: nombresAceitunas[i],
-        peso: Math.floor(Math.random() * 256),
+
+const getAll = async() => {
+    try{
+        
+        const aceitunas = await aceitunasModel.findAll();
+        return [null, aceitunas];
+    }catch(e){
+        return [e.message,null];
     }
-    aceitunas.push(newAceituna);
-    maxId++;
 }
 
-const getAll = () => {
-    // falta la parte de conseguir los datos de la base de datos
-    return [null, aceitunas];
-}
-
-const getById = (id) => {
+const getById = async (id) => {
     try {
-        const aceituna = aceitunas.find(element => element.id == id);
+        const aceituna = await aceitunasModel.findByPk(id);
         return [null, aceituna];
     }
     catch (e) {
@@ -54,9 +34,9 @@ const create = (tipo, peso) => {
     return [null, aceituna];
 }
 
-const update = (id,tipo,peso) => {
+const update = async(id,tipo,peso) => {
     
-    if(id === undefined){
+    if(id == undefined){
         const error = "Tienes que especificar un ID válido";
         return [error,null];
     }
@@ -65,12 +45,13 @@ const update = (id,tipo,peso) => {
         return [error, null];
     }
     try {
-        const aceituna = aceitunas.find(element => element.id == id);
-        aceituna.tipo = tipo;
-        aceituna.peso = peso;
+        console.log("id",id);
+        await aceitunasModel.update({tipo,peso},id);
+        const aceituna= await aceitunasModel.findByPk(id);
         return [null,aceituna];
     }
     catch (e) {
+        console.log(e)
         return [e.message,null];
     }
 };

@@ -6,7 +6,7 @@ import isAuthenticated from "../middlewares/authMiddleware.js";
 
 const router = Router();
 
-router.get("/",isAuthenticated,(req,res)=>{
+router.get("/",(req,res)=>{
     aceitunasViewController.getAll(req,res);
 });
 
