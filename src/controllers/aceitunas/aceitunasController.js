@@ -1,10 +1,14 @@
 import aceitunasModel from "../../models/aceitunasModel.js";
+import {Op} from "sequelize"
 
-
-const getAll = async() => {
+const getAll = async(q=null) => {
+    
+    const options = {};
+    if(q) {
+        options.where = { tipo:{ [Op.like]: `%${q}%` },}
+    }
     try{
-        
-        const aceitunas = await aceitunasModel.findAll();
+        const aceitunas = await aceitunasModel.findAll(options);
         return [null, aceitunas];
     }catch(e){
         return [e.message,null];
@@ -44,10 +48,16 @@ const update = async(id,tipo,peso) => {
         const error = "Tipo y peso deben ser definidos";
         return [error, null];
     }
+    if (peso < 0 || peso > 255){
+        const error = "El peso debe estar entre 0 y 255 (incluidos)";
+        return [error,null];
+    }
     try {
         console.log("id",id);
-        await aceitunasModel.update({tipo,peso},id);
         const aceituna= await aceitunasModel.findByPk(id);
+        aceituna.tipo = tipo;
+        aceituna.peso = peso;
+        aceituna.save();
         return [null,aceituna];
     }
     catch (e) {
@@ -58,11 +68,12 @@ const update = async(id,tipo,peso) => {
 
 const remove = async (id) => {
     try {
-        const aceituna = await aceitunasModel.remove(id);
+        const aceituna = await aceitunasModel.findByPk(id);
         if(!aceituna){
             const error = "No se ha encontrado ningún elemento con ese ID";
             return[error,null];
         }
+        aceituna.destroy();
         return [null,aceituna];
     }
     catch (e) {

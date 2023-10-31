@@ -2,14 +2,15 @@ import aceitunasController from "./aceitunasController.js";
 
  const getAll = async (req,res) =>{
     const errorMessage = req.query.error;
-    const [error, aceitunas] = await aceitunasController.getAll();
-    res.render("aceitunas/list",{error: error || errorMessage,aceitunas});
+    const q = req.query.q;
+    const [error, aceitunas] = await aceitunasController.getAll(q);
+    res.render("aceitunas/list",{error: error || errorMessage,aceitunas,session:req.session});
 }
 
 const getById = async (req,res) =>{
     const id = req.params.id;
     const [error,aceituna] = await aceitunasController.getById(id);
-    res.render("aceitunas/show",{error,aceituna});   
+    res.render("aceitunas/show",{error,aceituna,session:req.session});   
 }
 
 const createForm = (req,res)=>{
@@ -34,7 +35,7 @@ const updateForm = async(req,res) =>{
     if(error){
         res.redirect("/aceitunas");
     }
-    res.render("aceitunas/edit",{error:errorMessage,aceituna});
+    res.render("aceitunas/edit",{error:errorMessage,aceituna,session:req.session});
 }
 
 const update = async(req,res) =>{

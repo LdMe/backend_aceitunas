@@ -1,5 +1,7 @@
 
 import jwt from "jsonwebtoken";
+
+import usuariosModel from "../models/usuarioModel.js";
 /* 
 const isAuthenticated = (req,res,next) =>{
     const token = req.query.token;
@@ -24,5 +26,19 @@ const isAuthenticated = (req,res,next) =>{
         res.redirect("/login");
     }
 }
-
-export default isAuthenticated;
+const isAdmin = async (req,res,next) =>{
+    if(req.session.user ){
+        const user = await usuariosModel.findByPk(req.session.user);
+        if(user.rol !== "admin"){
+            res.redirect("/login");
+        }
+        next();
+    }
+    else{
+        res.redirect("/login");
+    }
+}
+export  {
+    isAuthenticated,
+    isAdmin
+};

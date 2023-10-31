@@ -8,12 +8,16 @@ block content
     button 
         a(href='/aceitunas/new') Crear nuevo tipo de aceituna
     if aceitunas
+        form(action="/aceitunas",method="GET")
+            input(type="text", name="q") 
+            input(type="submit", value="buscar")
         ul 
             each aceituna in aceitunas
                 li= aceituna.tipo +', '+ aceituna.peso
                     button 
                         a(href='/aceitunas/'+aceituna.aceituna_id) Ver
-                    button
-                        a(href='/aceitunas/'+aceituna.aceituna_id+'/edit') Editar
-                    button
-                        a(href='/aceitunas/'+aceituna.aceituna_id+'/delete') Eliminar
+                    if session.rol === "admin"
+                        button
+                            a(href='/aceitunas/'+aceituna.aceituna_id+'/edit') Editar
+                        button
+                            a(href='/aceitunas/'+aceituna.aceituna_id+'/delete') Eliminar
