@@ -11,6 +11,8 @@ block content
         ul 
             each aceituna in aceitunas
                 li= aceituna.tipo +', '+ aceituna.peso
+                    button 
+                        a(href='/aceitunas/'+aceituna.aceituna_id) Ver
                     button
                         a(href='/aceitunas/'+aceituna.aceituna_id+'/edit') Editar
                     button
