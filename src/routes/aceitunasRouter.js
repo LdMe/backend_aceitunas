@@ -5,7 +5,7 @@ import {isAuthenticated,isAdmin} from "../middlewares/authMiddleware.js";
 
 
 const router = Router();
-
+console.log("hola");
 router.get("/",(req,res)=>{
     aceitunasViewController.getAll(req,res);
 });

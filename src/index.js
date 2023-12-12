@@ -1,12 +1,18 @@
 import express from "express";
 import dotenv from "dotenv";
 import session from "express-session";
+import cors from "cors";
 
 import router from "./routes/router.js";
 
 dotenv.config();
 const app = express();
 
+const corsOptions = {
+    origin:"http://localhost:5173",
+    credentials: true,
+}
+app.use(cors(corsOptions));
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave:false,

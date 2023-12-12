@@ -19,6 +19,7 @@ const isAuthenticated = (req,res,next) =>{
 } */
 
 const isAuthenticated = (req,res,next) =>{
+
     if(req.session.user){
         next();
     }
@@ -26,6 +27,29 @@ const isAuthenticated = (req,res,next) =>{
         res.redirect("/login");
     }
 }
+
+const isAuthenticatedApi = (req,res,next) =>{
+    try{
+    console.log("cookies",req.headers.cookie);
+    const cookie = req.headers.cookie;
+    const token = cookie.split("=")[1];
+    console.log("token",token);
+
+    if(!token){
+        return res.status(401).json({error:"authentication failed" });
+    }
+    
+        const {email} = jwt.verify(token,process.env.JSON_SECRET);
+        console.log(email);
+        req.email = email;
+        next();
+    }
+    catch(error){
+        res.status(401).json({error:"authentication failed" });
+    }
+}
+
+
 const isAdmin = async (req,res,next) =>{
     if(req.session.user ){
         const user = await usuariosModel.findByPk(req.session.user);
@@ -40,5 +64,6 @@ const isAdmin = async (req,res,next) =>{
 }
 export  {
     isAuthenticated,
-    isAdmin
+    isAdmin,
+    isAuthenticatedApi
 };
